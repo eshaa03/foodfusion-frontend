@@ -11,7 +11,7 @@ export function CartPage({ isDietMode, user, cartItems, setCartItems }) {
   const syncCart = async (items) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch("http://localhost:5000/api/cart", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/cart`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -142,8 +142,6 @@ function FoodManagement() {
       const data = new FormData();
       data.append("isAvailable", newStatus);
 
-      // Keep other required fields to satisfy strict validation if any (usually partial updates work)
-      // data.append("name", food.name); 
 
       const res = await updateFood(food._id, data);
 
@@ -159,7 +157,7 @@ function FoodManagement() {
   const getImageUrl = (path) => {
     if (!path) return "";
     if (path.startsWith("http") || path.startsWith("blob:")) return path;
-    return `http://localhost:5000${path}`;
+    return `https://foodfusion-backend-zjrp.onrender.com${path}`;
   };
 
   /* ---------------- UI ---------------- */

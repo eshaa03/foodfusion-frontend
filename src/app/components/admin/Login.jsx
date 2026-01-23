@@ -52,7 +52,7 @@ export default function Login({ onLogin }) {
       }
     } catch (error) {
       console.error('Registration error:', error);
-      setError(error.response?.data?.message || 'Backend not running? Check localhost:5000');
+      setError(error.response?.data?.message || 'Backend not reachable. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -86,7 +86,7 @@ export default function Login({ onLogin }) {
 
     } catch (error) {
       console.error('Login error:', error);
-      setError(error.response?.data?.message || 'Backend connection failed. Make sure your backend is running on localhost:5000');
+      setError(error.response?.data?.message || 'Unable to connect to server. Please try again later.');
     } finally {
       setLoading(false);
     }

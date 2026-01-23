@@ -59,7 +59,7 @@ export function CheckoutPage({ cartItems, user, isDietMode, setCartItems }) {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/profile", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -109,7 +109,7 @@ export function CheckoutPage({ cartItems, user, isDietMode, setCartItems }) {
   const handleApplyCoupon = async () => {
     // 1. Check eligibility (First Order Only)
     try {
-      const res = await fetch("http://localhost:5000/api/orders/my", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/my`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       const orders = await res.json();
@@ -182,7 +182,7 @@ export function CheckoutPage({ cartItems, user, isDietMode, setCartItems }) {
       // 2. Fix Payment Enum
       const paymentMethodEnum = paymentMethod === "cod" ? "COD" : "UPI";
 
-      const res = await fetch("http://localhost:5000/api/orders", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -235,7 +235,7 @@ export function CheckoutPage({ cartItems, user, isDietMode, setCartItems }) {
       return;
     }
 
-    const res = await fetch("http://localhost:5000/api/profile/address", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/address`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

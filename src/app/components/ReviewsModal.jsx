@@ -18,7 +18,7 @@ export function ReviewsModal({ item, onClose, isDietMode, onUpdate }) {
 
     const fetchReviews = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/api/foods/${item.id}/reviews`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/foods/${item.id}/reviews`);
             const data = await res.json();
             setReviews(Array.isArray(data) ? data : []);
         } catch (err) {
@@ -38,7 +38,7 @@ export function ReviewsModal({ item, onClose, isDietMode, onUpdate }) {
                 return;
             }
 
-            const res = await fetch(`http://localhost:5000/api/foods/${item.id}/reviews`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/foods/${item.id}/reviews`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

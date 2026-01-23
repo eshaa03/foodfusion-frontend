@@ -9,8 +9,9 @@ export default function AdminTopbar({ restaurant }) {
   if (!restaurant) return null;
 
   const imageUrl = restaurant.image
-    ? `http://localhost:5000${restaurant.image}`
+    ? `https://foodfusion-backend-zjrp.onrender.com${restaurant.image}`
     : null;
+
 
   return (
     <header className="h-16 bg-white border-b flex items-center justify-end px-6">

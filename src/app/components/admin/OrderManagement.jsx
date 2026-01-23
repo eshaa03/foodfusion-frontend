@@ -52,16 +52,14 @@ function OrderManagement() {
     const idMatch = order._id?.toLowerCase().includes(searchQuery.toLowerCase());
     const nameMatch = order.user?.name?.toLowerCase().includes(searchQuery.toLowerCase());
 
-    // 2. Tab Filter (Active vs History)
-    // History = Delivered or Cancelled (Check both main status and delivery status)
+
     const isHistory =
       ["Delivered", "Cancelled"].includes(order.status) ||
       order.deliveryStatus === "Delivered";
 
     const matchesTab = activeTab === "history" ? isHistory : !isHistory;
 
-    // 3. Dropdown Status Filter
-    // If filtering by status, check if it matches either status or deliveryStatus
+   
     const matchesStatus =
       statusFilter === "all" ||
       order.status === statusFilter ||

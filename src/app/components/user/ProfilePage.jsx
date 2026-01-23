@@ -81,7 +81,7 @@ export function ProfilePage({
 
   /* ---------------- Fetch Profile ---------------- */
   useEffect(() => {
-    fetch("http://localhost:5000/api/profile", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -141,7 +141,7 @@ export function ProfilePage({
 
   useEffect(() => {
     if (activeModal === "orders") {
-      fetch("http://localhost:5000/api/orders/my", {
+      fetch(`${import.meta.env.VITE_API_URL}/api/orders/my`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -165,7 +165,7 @@ export function ProfilePage({
   useEffect(() => {
     if (activeModal === "redeem") {
       setLoadingPoints(true);
-      fetch("http://localhost:5000/api/profile/redeem-points", {
+      fetch(`${import.meta.env.VITE_API_URL}/api/profile/redeem-points`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -186,7 +186,7 @@ export function ProfilePage({
       message: "Do you really want to cancel this order? This action cannot be undone.",
       onConfirm: async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/orders/${id}/cancel`, {
+          fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}/cancel`, {
             method: "PUT",
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           });
@@ -219,7 +219,7 @@ export function ProfilePage({
       return;
     }
 
-    const res = await fetch("http://localhost:5000/api/profile", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -262,8 +262,7 @@ export function ProfilePage({
 
     const proceedWithSave = async () => {
       // ... (save logic)
-      const res = await fetch("http://localhost:5000/api/profile/address", {
-        method: "PUT",
+      fetch(`${import.meta.env.VITE_API_URL}/api/profile/address`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -317,7 +316,7 @@ export function ProfilePage({
       message: "Do you really want to delete this address? This action cannot be undone.",
       onConfirm: async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/profile/address/${id}`, {
+          fetch(`${import.meta.env.VITE_API_URL}/api/profile/address/${id}`, {
             method: "DELETE",
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           });
@@ -371,17 +370,6 @@ export function ProfilePage({
     twoFactorAuth: false,
   });
 
-  /*useEffect(() => {
-    if (activeModal === "favorites") {
-      fetch("http://localhost:5000/api/profile/favorites", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-        .then(res => res.json())
-        .then(setFavorites);
-    }
-  }, [activeModal]);*/
 
   return (
     <div className="pb-20">
@@ -720,7 +708,7 @@ export function ProfilePage({
               {/* Logout All Devices */}
               <button
                 onClick={async () => {
-                  await fetch("http://localhost:5000/api/profile", {
+                  fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
@@ -812,10 +800,6 @@ export function ProfilePage({
 
                       <div className="space-y-3">
                         {o.items?.map((item, idx) => {
-                          // Robust Image Fallback:
-                          // 1. Try populated food image
-                          // 2. Try matching by name in global foodItems
-                          // 3. Fallback placeholder
                           let imageUrl = item.food?.image;
                           if (!imageUrl) {
                             const foundFood = foodItems.find(f => f.name === item.name);
@@ -825,7 +809,7 @@ export function ProfilePage({
 
                           // Ensure URL is absolute
                           if (imageUrl && !imageUrl.startsWith("http")) {
-                            imageUrl = `http://localhost:5000${imageUrl}`;
+                            imageUrl = `${import.meta.env.VITE_API_URL}${imageUrl}`;
                           }
 
                           return (

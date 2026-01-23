@@ -9,7 +9,7 @@ export default function AdminLayout({ user, onLogout }) {
   useEffect(() => {
     if (user.role !== "admin") return;
 
-    fetch("http://localhost:5000/api/admin/restaurant", {
+    fetch("https://foodfusion-backend-zjrp.onrender.com/api/admin/restaurant", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

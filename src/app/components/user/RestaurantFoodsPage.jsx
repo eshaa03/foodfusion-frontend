@@ -16,14 +16,14 @@ export default function RestaurantFoodsPage({
   const [foods, setFoods] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/foods/restaurant/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/foods/restaurant/${id}`)
       .then(res => res.json())
       .then(data => {
         const normalized = data.map(f => ({
           ...f,
           id: f._id,
           price: f.basePrice,
-          image: `http://localhost:5000${f.image}`,
+          image: `${import.meta.env.VITE_API_URL}${f.image}`,
           isAvailable: f.isAvailable !== false,
         }));
         setFoods(normalized);

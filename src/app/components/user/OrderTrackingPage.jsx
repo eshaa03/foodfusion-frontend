@@ -24,7 +24,7 @@ export function OrderTrackingPage() {
 
 
   const markDelivered = async () => {
-    await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${orderId}/status`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +40,7 @@ export function OrderTrackingPage() {
 
       try {
         const res = await fetch(
-          `http://localhost:5000/api/orders/${orderId}`,
+          `${import.meta.env.VITE_API_URL}/api/orders/${orderId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

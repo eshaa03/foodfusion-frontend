@@ -27,7 +27,7 @@ export function SavedPage({ isDietMode, onAddToCart, favorites = [], foodItems =
   );
 
   const handleRemove = async (id) => {
-    const res = await fetch("http://localhost:5000/api/profile/favorites", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/favorites`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

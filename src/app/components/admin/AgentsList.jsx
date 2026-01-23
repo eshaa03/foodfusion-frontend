@@ -21,11 +21,7 @@ export default function AgentsList() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this agent? This will remove their agent profile and user account.")) return;
     try {
-      await deleteUser(id); // NOTE: Agents have a 'user' field, but the list might just give us raw data. Let's check API response structure.
-      // If /auth/agents returns User objects (agents have user role 'agent'), then 'id' is correct.
-      // If it returns DeliveryAgent objects, we need agent.user._id or just delete the user which cascades?
-      // Assuming /auth/agents returns users with role 'agent' or similar structure
-      // Wait, let's verify /auth/agents endpoint. 
+      await deleteUser(id); 
 
       setAgents(prev => prev.filter(a => a._id !== id));
     } catch (err) {

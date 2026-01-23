@@ -25,7 +25,7 @@ export default function ExplorePage({ isDietMode }) {
   /* ---------------- FETCH DATA ---------------- */
   useEffect(() => {
     // 1. Fetch Restaurants
-    fetch("http://localhost:5000/api/restaurants")
+    fetch(`${import.meta.env.VITE_API_URL}/api/restaurants`)
       .then(res => res.json())
       .then(data => {
         console.log("Raw Restaurants Data:", data); // 🔥 DEBUG
@@ -39,7 +39,7 @@ export default function ExplorePage({ isDietMode }) {
           ...r,
           id: r._id,
           image: r.image
-            ? `http://localhost:5000${r.image}`
+            ? `${import.meta.env.VITE_API_URL}${r.image}`
             : "https://via.placeholder.com/400",
         }));
         console.log("Normalized Restaurants:", normalized); // 🔥 DEBUG
@@ -48,7 +48,7 @@ export default function ExplorePage({ isDietMode }) {
       .catch(err => console.error("Failed to load restaurants", err));
 
     // 2. Fetch User Profile for Address
-    fetch("http://localhost:5000/api/profile", {
+   fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

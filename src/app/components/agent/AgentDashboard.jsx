@@ -195,8 +195,7 @@ export default function AgentDashboard() {
   const weekEarnings = totalEarningsToday; // Assuming daily for now, can be improved later
   const completedToday = completedOrders.length;
 
-  // Calculate Average Delivery Time (Mock logic: diff betwen created and updated, or random realistic if quick testing)
-  // detailed logic: sum(completed.updatedAt - completed.createdAt) / count
+
   const avgTimeMinutes = completedOrders.length > 0
     ? Math.round(completedOrders.reduce((acc, order) => {
       const start = new Date(order.createdAt);

@@ -151,7 +151,7 @@ export function UserApp({ user, token, onLogout }) {
   const totalCartPrice = cartItems.reduce((sum, i) => sum + i.item.price * i.qty, 0);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/foods")
+    fetch(`${import.meta.env.VITE_API_URL}/api/foods`)
       .then(res => res.json())
       .then(data => {
         // Safe check for array
@@ -168,7 +168,7 @@ export function UserApp({ user, token, onLogout }) {
           price: f.basePrice,        // frontend uses price
           image: f.image?.startsWith("http")
             ? f.image
-            : `http://localhost:5000${f.image}`,
+            : `${import.meta.env.VITE_API_URL}${f.image}`,
           isAvailable: f.isAvailable !== false, // Default to true if undefined
         }));
 
@@ -196,7 +196,7 @@ export function UserApp({ user, token, onLogout }) {
   ))];
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/profile/favorites", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/profile/favorites`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -206,7 +206,7 @@ export function UserApp({ user, token, onLogout }) {
   }, []);
 
   const toggleFavorite = async (item) => {
-    const res = await fetch("http://localhost:5000/api/profile/favorites", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/favorites`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
