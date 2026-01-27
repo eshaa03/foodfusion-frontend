@@ -83,7 +83,11 @@ export default function AdminProfile() {
           src={
             imageFile
               ? URL.createObjectURL(imageFile)
-              : restaurant.image || "https://via.placeholder.com/800x300"
+              : restaurant.image
+                  ? restaurant.image.startsWith("http")
+                      ? restaurant.image
+                      : `https://foodfusion-backend-zjrp.onrender.com${restaurant.image}`
+                  : "https://via.placeholder.com/800x300"
           }
           alt={restaurant.name}
           className="w-full h-60 object-cover"
