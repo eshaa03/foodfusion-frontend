@@ -39,9 +39,12 @@ export default function ExplorePage({ isDietMode }) {
           ...r,
           id: r._id,
           image: r.image
-            ? `${import.meta.env.VITE_API_URL}${r.image}`
+            ? r.image.startsWith("http")
+              ? r.image
+              : `${import.meta.env.VITE_API_URL}${r.image}`
             : "https://via.placeholder.com/400",
         }));
+
         console.log("Normalized Restaurants:", normalized); // 🔥 DEBUG
         setRestaurants(normalized);
       })

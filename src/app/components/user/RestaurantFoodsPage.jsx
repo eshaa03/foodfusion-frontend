@@ -23,12 +23,15 @@ export default function RestaurantFoodsPage({
           ...f,
           id: f._id,
           price: f.basePrice,
-          image: `${import.meta.env.VITE_API_URL}${f.image}`,
+          image: f.image?.startsWith("http")
+            ? f.image
+            : `${import.meta.env.VITE_API_URL}${f.image}`,
           isAvailable: f.isAvailable !== false,
         }));
         setFoods(normalized);
       });
   }, [id]);
+
 
   return (
     <div className="px-4 pb-20 pt-4">

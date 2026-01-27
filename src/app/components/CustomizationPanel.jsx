@@ -2,40 +2,45 @@ import { useState } from 'react';
 import { X, Plus, Minus } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-const INGREDIENTS = [
-  { id: 'cheese', name: 'Extra Cheese', price: 1.5, icon: '🧀' },
-  { id: 'bacon', name: 'Bacon', price: 2.0, icon: '🥓' },
-  { id: 'avocado', name: 'Avocado', price: 1.8, icon: '🥑' },
-  { id: 'tomato', name: 'Tomato', price: 0.5, icon: '🍅' },
-  { id: 'lettuce', name: 'Lettuce', price: 0.3, icon: '🥬' },
-  { id: 'onion', name: 'Onion', price: 0.3, icon: '🧅' },
-];
+// const INGREDIENTS = [
+//   { id: 'cheese', name: 'Extra Cheese', price: 1.5, icon: '🧀' },
+//   { id: 'bacon', name: 'Bacon', price: 2.0, icon: '🥓' },
+//   { id: 'avocado', name: 'Avocado', price: 1.8, icon: '🥑' },
+//   { id: 'tomato', name: 'Tomato', price: 0.5, icon: '🍅' },
+//   { id: 'lettuce', name: 'Lettuce', price: 0.3, icon: '🥬' },
+//   { id: 'onion', name: 'Onion', price: 0.3, icon: '🧅' },
+// ];
 
-const PORTION_SIZES = [
-  { id: 'small', label: 'Small', multiplier: 0.8 },
-  { id: 'regular', label: 'Regular', multiplier: 1.0 },
-  { id: 'large', label: 'Large', multiplier: 1.3 },
-];
+// const PORTION_SIZES = [
+//   { id: 'small', label: 'Small', multiplier: 0.8 },
+//   { id: 'regular', label: 'Regular', multiplier: 1.0 },
+//   { id: 'large', label: 'Large', multiplier: 1.3 },
+// ];
 
 export function CustomizationPanel({ item, isDietMode, onClose, onAddToCart, budget, initialValues }) {
   const [selectedIngredients, setSelectedIngredients] = useState(new Set(initialValues?.ingredients || []));
   const [portionSize, setPortionSize] = useState(initialValues?.portionSize || 'regular');
   const [quantity, setQuantity] = useState(initialValues?.quantity || 1);
+  const INGREDIENTS = item.ingredients || [];
+  const PORTION_SIZES = item.portions || [];
 
   if (!item) return null;
 
-  const selectedPortion = PORTION_SIZES.find(p => p.id === portionSize) || PORTION_SIZES[1];
+  const selectedPortion =
+    PORTION_SIZES.find(p => p.id === portionSize) || PORTION_SIZES[0] || { multiplier: 1 };
 
-  const ingredientsTotal = Array.from(selectedIngredients).reduce((sum, id) => {
-    const ingredient = INGREDIENTS.find(i => i.id === id);
+
+  const ingredientsTotal = Array.from(selectedIngredients).reduce((sum, name) => {
+    const ingredient = INGREDIENTS.find(i => i.name === name);
     return sum + (ingredient?.price || 0);
   }, 0);
 
+
   const totalPrice = (item.price + ingredientsTotal) * selectedPortion.multiplier * quantity;
 
-  const toggleIngredient = (id) => {
+  const toggleIngredient = (name) => {
     const newSet = new Set(selectedIngredients);
-    newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+    newSet.has(name) ? newSet.delete(name) : newSet.add(name);
     setSelectedIngredients(newSet);
   };
 
@@ -121,10 +126,10 @@ export function CustomizationPanel({ item, isDietMode, onClose, onAddToCart, bud
                 {availableIngredients.map(ingredient => (
                   <button
                     key={ingredient.id}
-                    onClick={() => toggleIngredient(ingredient.id)}
+                    onClick={() => toggleIngredient(ingredient.name)}
                     className="flex items-center gap-3 p-3 rounded-xl border-2 transition-all"
                     style={{
-                      borderColor: selectedIngredients.has(ingredient.id)
+                      borderColor: selectedIngredients.has(ingredient.name)
                         ? isDietMode ? 'var(--food-green)' : 'var(--food-red)'
                         : '#e5e5e5',
                       backgroundColor: selectedIngredients.has(ingredient.id)
