@@ -122,37 +122,52 @@ export function CustomizationPanel({ item, isDietMode, onClose, onAddToCart, bud
             {/* Ingredients / Add-ons */}
             <div>
               <h3 className="text-[14px] font-[600] mb-3">Add Ingredients</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {availableIngredients.map(ingredient => (
-                  <button
-                    key={ingredient.id}
-                    onClick={() => toggleIngredient(ingredient.name)}
-                    className="flex items-center gap-3 p-3 rounded-xl border-2 transition-all"
-                    style={{
-                      borderColor: selectedIngredients.has(ingredient.name)
-                        ? isDietMode ? 'var(--food-green)' : 'var(--food-red)'
-                        : '#e5e5e5',
-                      backgroundColor: selectedIngredients.has(ingredient.id)
-                        ? isDietMode ? 'rgba(76, 175, 80, 0.05)' : 'rgba(239, 68, 68, 0.05)'
-                        : 'white',
-                    }}
-                  >
-                    <span className="text-2xl">{ingredient.icon}</span>
-                    <div className="flex-1 text-left">
-                      <div className="text-[12px] font-[600]">{ingredient.name}</div>
-                      <div className="text-[11px] text-gray-600">+₹{ingredient.price.toFixed(2)}</div>
-                    </div>
-                    {selectedIngredients.has(ingredient.id) && (
-                      <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[12px]"
-                        style={{ backgroundColor: isDietMode ? 'var(--food-green)' : 'var(--food-red)' }}
-                      >
-                        ✓
+
+              {availableIngredients.length === 0 ? (
+                <p className="text-sm text-gray-400 italic">
+                  No add-ons available
+                </p>
+              ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  {availableIngredients.map(ingredient => (
+                    <button
+                      key={ingredient.name}
+                      onClick={() => toggleIngredient(ingredient.name)}
+                      className="flex items-center gap-3 p-3 rounded-xl border-2 transition-all"
+                      style={{
+                        borderColor: selectedIngredients.has(ingredient.name)
+                          ? isDietMode ? 'var(--food-green)' : 'var(--food-red)'
+                          : '#e5e5e5',
+                        backgroundColor: selectedIngredients.has(ingredient.name)
+                          ? isDietMode ? 'rgba(76, 175, 80, 0.05)' : 'rgba(239, 68, 68, 0.05)'
+                          : 'white',
+                      }}
+                    >
+                      <div className="flex-1 text-left">
+                        <div className="text-[12px] font-[600]">{ingredient.name}</div>
+                        <div className="text-[11px] text-gray-600">
+                          +₹{Number(ingredient.price).toFixed(2)}
+                        </div>
                       </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
+
+                      {selectedIngredients.has(ingredient.name) && (
+                        <div
+                          className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[12px]"
+                          style={{
+                            backgroundColor: isDietMode
+                              ? 'var(--food-green)'
+                              : 'var(--food-red)'
+                          }}
+                        >
+                          ✓
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+</div>
+
 
             {/* Quantity */}
             <div>
