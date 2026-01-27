@@ -100,14 +100,14 @@ export function UserApp({ user, token, onLogout }) {
     if (selectedCategory !== "All" && item.category !== selectedCategory) return false;
 
     // Mode filter (Strict)
-    const mode = item.mode || "both"; // default to both
+    const mode = item.mode || "both";
+
     if (isDietMode) {
-      if (mode === "normal") return false; // Hide 'Normal Only' items in Diet Mode
-      // STRICT: Only show items marked isHealthy in Diet Mode
-      if (!item.isHealthy) return false;
-    } else {
-      if (mode === "diet") return false; // Hide 'Diet Only' items in Normal Mode
+      return (mode === "diet" || mode === "both") && item.isHealthy;
     }
+
+    return (mode === "normal" || mode === "both");
+
 
     // Normal vegetarian/vegan filters
     if (!isDietMode && normalFilters.size > 0) {

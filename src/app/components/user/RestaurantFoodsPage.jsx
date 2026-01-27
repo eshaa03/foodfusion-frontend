@@ -46,7 +46,17 @@ export default function RestaurantFoodsPage({
       <h2 className="text-xl font-bold mb-4">Menu</h2>
 
       <div className="flex flex-wrap -mx-2">
-        {foods.map(food => (
+        {foods
+          .filter(food => {
+            const mode = food.mode || "both";
+
+            if (isDietMode) {
+              return (mode === "diet" || mode === "both") && food.isHealthy;
+            }
+            return (mode === "normal" || mode === "both");
+          })
+          .map(food => (
+
           <div key={food.id} className="px-2 mb-4">
             <FoodCard
               item={food}
