@@ -9,7 +9,7 @@ export default function AdminProfile() {
   const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
-    fetch("https://foodfusion-backend-zjrp.onrender.com/api/admin/restaurant", {
+    fetch("https://foodfusion-backend-zjrp.onrender.com/api/restaurants/me", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -36,8 +36,9 @@ export default function AdminProfile() {
       data.append("image", imageFile);
     }
 
-    const res = await fetch("https://foodfusion-backend-zjrp.onrender.com/api/admin/restaurant", {
-      method: "PUT",
+    const res = await fetch("https://foodfusion-backend-zjrp.onrender.com/api/restaurants/me", {
+    method: "PUT",
+
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
