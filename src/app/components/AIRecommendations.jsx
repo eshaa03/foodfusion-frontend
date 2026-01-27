@@ -11,8 +11,13 @@ export function AIRecommendations({
   budget,
   onShowReviews,
 }) {
+  
+  const filteredRecommendations = (recommendations || []).filter(item => {
+    return item.price <= budget;
+  });
 
-  if (!recommendations || recommendations.length === 0) {
+
+  if (!filteredRecommendations || filteredRecommendations.length === 0) {
     if (isDietMode) {
       return (
         <div className="mb-6">
@@ -52,7 +57,7 @@ export function AIRecommendations({
       </div>
 
       <div className="flex gap-4 overflow-x-auto pb-2">
-        {recommendations.map((item) => (
+        {filteredRecommendations.map((item) => (
           <FoodCard
             key={item.id}
             item={item}
