@@ -1,13 +1,13 @@
-import http from 'http';
+import https from 'https';
 
 const options = {
-    hostname: 'localhost',
-    port: 5000,
+    hostname: 'foodfusion-backend-zjrp.onrender.com',
+    port: 443,
     path: '/api/restaurants',
     method: 'GET',
 };
 
-const req = http.request(options, (res) => {
+const req = https.request(options, (res) => {
     console.log(`STATUS: ${res.statusCode}`);
     let data = '';
 
