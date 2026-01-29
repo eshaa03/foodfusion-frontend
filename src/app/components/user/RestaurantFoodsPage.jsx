@@ -15,6 +15,8 @@ export default function RestaurantFoodsPage({
   const navigate = useNavigate();
   const [foods, setFoods] = useState([]);
 
+  
+
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/foods/restaurant/${id}`)
       .then(res => res.json())
@@ -50,12 +52,14 @@ export default function RestaurantFoodsPage({
           .filter(food => {
             const mode = food.mode || "both";
 
-            if (isDietMode) {
-              return (mode === "diet" || mode === "both") && food.isHealthy;
-            }
-            return (mode === "normal" || mode === "both");
+            // Mode filtering
+            if (isDietMode && mode === "normal") return false;
+            if (!isDietMode && mode === "diet") return false;
+
+            return true;
           })
           .map(food => (
+
 
           <div key={food.id} className="px-2 mb-4">
             <FoodCard

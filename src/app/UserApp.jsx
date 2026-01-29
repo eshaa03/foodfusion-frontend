@@ -93,21 +93,20 @@ export function UserApp({ user, token, onLogout }) {
 
   /* ---------------- FILTERING LOGIC ---------------- */
   const filteredItems = foods.filter(item => {
-    // Search filter
+  // Search filter
     if (searchQuery && !item.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
 
     // Category filter
     if (selectedCategory !== "All" && item.category !== selectedCategory) return false;
 
-    // Mode filter (Strict)
+    // Mode filter (STRICT + CORRECT)
     const mode = item.mode || "both";
 
     if (isDietMode) {
-      return (mode === "diet" || mode === "both") && item.isHealthy;
+      if (mode === "normal") return false;
+    } else {
+      if (mode === "diet") return false;
     }
-
-    return (mode === "normal" || mode === "both");
-
 
     // Normal vegetarian/vegan filters
     if (!isDietMode && normalFilters.size > 0) {
@@ -115,11 +114,12 @@ export function UserApp({ user, token, onLogout }) {
       if (normalFilters.has("Vegan") && !item.isVegan) return false;
     }
 
-    // Budget/Price Filter
+    // Budget filter
     if (item.price > budget) return false;
 
     return true;
   });
+
 
   const recommendations = foods
     .filter(item => {

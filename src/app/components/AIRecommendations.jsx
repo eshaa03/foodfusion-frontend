@@ -13,8 +13,16 @@ export function AIRecommendations({
 }) {
   
   const filteredRecommendations = (recommendations || []).filter(item => {
-    return item.price <= budget;
+    const mode = item.mode || "both";
+
+    if (isDietMode && mode === "normal") return false;
+    if (!isDietMode && mode === "diet") return false;
+
+    if (item.price > budget) return false;
+
+    return true;
   });
+
 
 
   if (!filteredRecommendations || filteredRecommendations.length === 0) {
