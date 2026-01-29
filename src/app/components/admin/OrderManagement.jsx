@@ -441,7 +441,7 @@ function OrderDetailsModal({ order, onClose, role }) {
               <div className="bg-gray-50 p-4 rounded-xl space-y-1 text-sm">
                 <p><span className="text-gray-500">Name:</span> <span className="font-medium">{order.user?.name}</span></p>
                 <p><span className="text-gray-500">Email:</span> <span className="font-medium">{order.user?.email || "—"}</span></p>
-                <p><span className="text-gray-500">Phone:</span> <span className="font-medium">{order.user?.phone || "—"}</span></p>
+                <p><span className="text-gray-500">Phone:</span> <span className="font-medium">{order.address?.phone || "—"}</span></p>
               </div>
             </div>
             <div>
@@ -450,7 +450,7 @@ function OrderDetailsModal({ order, onClose, role }) {
               </h4>
               <div className="bg-gray-50 p-4 rounded-xl text-sm">
                 <p className="font-medium">{order.address?.street}</p>
-                <p className="text-gray-600">{order.address?.city}, {order.address?.state} {order.address?.zip}</p>
+                <p className="text-gray-600">{order.address?.city}, {order.address?.state} {order.address?.pincode}</p>
               </div>
             </div>
           </div>

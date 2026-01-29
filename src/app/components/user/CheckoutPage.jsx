@@ -190,10 +190,14 @@ export function CheckoutPage({ cartItems, user, isDietMode, setCartItems }) {
         },
         body: JSON.stringify({
           items: cartItems.map(i => ({
-            foodId: i.item._id,
+            foodId: i.item.id,
             name: i.item.name,
             price: i.item.price,
             qty: i.qty,
+            customizations: i.customizations || {
+              ingredients: [],
+              portionSize: "regular",
+            }
           })),
           address: formattedAddress,
           paymentMethod: paymentMethodEnum,

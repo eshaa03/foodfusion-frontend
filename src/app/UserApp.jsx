@@ -123,26 +123,23 @@ export function UserApp({ user, token, onLogout }) {
 
   const recommendations = foods
     .filter(item => {
-      // Search Filter
-      if (searchQuery && !item.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+      const mode = item.mode || "both";
 
-      // 🛡️ Strict Diet Mode Filter for Recommendations
-      if (isDietMode && !item.isHealthy) return false;
+      // Mode filtering
+      if (isDietMode && mode === "normal") return false;
+      if (!isDietMode && mode === "diet") return false;
 
-      // Vegetarian/Vegan Filters
-      if (!isDietMode && normalFilters.size > 0) {
-        if (normalFilters.has("Vegetarian") && !item.isVegetarian) return false;
-        if (normalFilters.has("Vegan") && !item.isVegan) return false;
-      }
       return true;
     })
     .map(item => {
       let score = 0;
+
       if (item.price <= budget) score += 2;
       score += tasteProfile.categoryWeight[item.category] || 0;
+
       if (isDietMode && item.isHealthy) score += 1;
       if (!isDietMode && !item.isHealthy) score += 0.5;
-      if (selectedCategory !== "All" && item.category === selectedCategory) score += 1.5;
+
       return { ...item, score };
     })
     .sort((a, b) => b.score - a.score)
