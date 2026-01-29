@@ -202,19 +202,27 @@ export function UserApp({ user, token, onLogout }) {
       .then(setFavorites);
   }, []);
 
-  const toggleFavorite = async (item) => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/favorites`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ itemId: item.id }),
-    });
+  const toggleFavorite = async (itemId) => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/favorites`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ itemId }),
+      });
 
-    const updated = await res.json();
-    setFavorites(updated);
+      const data = await res.json();
+
+      setFavorites(Array.isArray(data) ? data : []);
+
+    } catch (err) {
+      console.error("Favorite toggle failed", err);
+    }
   };
+
+
 
   const handleReviewUpdate = (foodId, newRating, newReviews) => {
     setFoods(prev => prev.map(f =>

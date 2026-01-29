@@ -6,7 +6,7 @@ export function SavedPage({ isDietMode, onAddToCart, favorites = [], foodItems =
 
 
   const savedItems = foodItems.filter(item => {
-    if (!favorites.includes(item.id)) return false;
+    if (!favorites.includes(item._id)) return false;
 
     // Mode filter (Strict) - matches UserApp.jsx logic
     const mode = item.mode || "both";

@@ -50,7 +50,7 @@ export function FoodCard({
         <button
           onClick={(e) => {
             e.stopPropagation();
-            onToggleFavorite(item);
+            onToggleFavorite(item._id);
           }}
           className="
             favorite-btn
