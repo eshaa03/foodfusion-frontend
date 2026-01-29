@@ -42,6 +42,13 @@ function OrderManagement() {
     return icons[status] || <Clock className="w-4 h-4" />;
   };
 
+  const getDisplayStatus = (order) => {
+    return order.deliveryStatus && order.deliveryStatus !== "Unassigned"
+      ? order.deliveryStatus
+      : order.status;
+  };
+
+
   /* ---------------- STATE ---------------- */
   const [activeTab, setActiveTab] = useState("active"); // "active" | "history"
   const [showFilterMenu, setShowFilterMenu] = useState(false); // Toggle dropdown
@@ -263,106 +270,91 @@ function OrderManagement() {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {filteredOrders.map((order) => (
-                <tr key={order._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-[600] text-gray-800">
-                    {order._id}
-                  </td>
+  {filteredOrders.map((order) => {
+    const displayStatus = getDisplayStatus(order);
 
-                  {role === "superadmin" && (
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {order.restaurant?.name || "N/A"}
-                    </td>
+    return (
+      <tr key={order._id} className="hover:bg-gray-50">
+        <td className="px-6 py-4 font-[600] text-gray-800">
+          {order._id}
+        </td>
+
+        {role === "superadmin" && (
+          <td className="px-6 py-4 text-sm text-gray-600">
+            {order.restaurant?.name || "N/A"}
+          </td>
+        )}
+
+        <td className="px-6 py-4">
+          <p className="font-[600] text-gray-800">
+            {order.user?.name || "—"}
+          </p>
+          <p className="text-[12px] text-gray-500">
+            {order.address?.street || ""}{" "}
+            {order.address?.city || ""}
+          </p>
+        </td>
+
+        <td className="px-6 py-4 text-[14px] text-gray-600">
+          {Array.isArray(order.items)
+            ? order.items.map((i, index) => (
+                <div key={index} className="mb-1">
+                  <span className="font-medium">{i.name}</span>
+                  {i.customizations?.ingredients?.length > 0 && (
+                    <span className="text-[12px] text-gray-500 block">
+                      + {i.customizations.ingredients.join(", ")}
+                    </span>
                   )}
+                  {i.customizations?.portionSize &&
+                    i.customizations.portionSize !== "regular" && (
+                      <span className="text-[12px] text-gray-500 block">
+                        Size: {i.customizations.portionSize}
+                      </span>
+                    )}
+                </div>
+              ))
+            : "—"}
+        </td>
 
-                  <td className="px-6 py-4">
-                    <p className="font-[600] text-gray-800">
-                      {order.user?.name || "—"}
-                    </p>
-                    <p className="text-[12px] text-gray-500">
-                      {order.address?.street || ""}{" "}
-                      {order.address?.city || ""}
-                    </p>
-                  </td>
+        <td className="px-6 py-4 font-[700] text-gray-800">
+          ₹{order.totalAmount}
+        </td>
 
-                  <td className="px-6 py-4 text-[14px] text-gray-600">
-                    {Array.isArray(order.items)
-                      ? order.items.map((i, index) => (
-                        <div key={index} className="mb-1">
-                          <span className="font-medium">{i.name}</span>
-                          {i.customizations?.ingredients?.length > 0 && (
-                            <span className="text-[12px] text-gray-500 block">
-                              + {i.customizations.ingredients.join(", ")}
-                            </span>
-                          )}
-                          {i.customizations?.portionSize && i.customizations.portionSize !== "regular" && (
-                            <span className="text-[12px] text-gray-500 block">
-                              Size: {i.customizations.portionSize}
-                            </span>
-                          )}
-                        </div>
-                      ))
-                      : "—"}
-                  </td>
+        <td className="px-6 py-4">
+          <span
+            className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-[600] ${getStatusColor(
+              displayStatus
+            )}`}
+          >
+            {getStatusIcon(displayStatus)}
+            {displayStatus}
+          </span>
+        </td>
 
-                  <td className="px-6 py-4 font-[700] text-gray-800">
-                    ₹{order.totalAmount}
-                  </td>
+        <td className="px-6 py-4 text-sm text-gray-600">
+          {order.deliveryAgent?.user?.name ||
+            order.deliveryAgent?.name ||
+            "Unassigned"}
+        </td>
 
-                  <td className="px-6 py-4">
-                    <div className="relative">
-                      {(role === "admin" || role === "superadmin") ? (
-                        <select
-                          value={order.status}
-                          onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                          className={`appearance-none cursor-pointer pl-3 pr-8 py-1 rounded-full text-[12px] font-[600] border-none focus:ring-2 focus:ring-opacity-50 ${getStatusColor(order.status)}`}
-                        >
-                          {role === "admin"
-                            ? ["Placed", "Preparing", "Ready"].map((s) => (
-                              <option key={s} value={s} className="bg-white text-gray-800">
-                                {s}
-                              </option>
-                            ))
-                            : ["Placed", "Preparing", "Ready", "Assigned", "Picked Up", "In Transit", "Delivered"].map((s) => (
-                              <option key={s} value={s} className="bg-white text-gray-800">
-                                {s}
-                              </option>
-                            ))
-                          }
-                        </select>
-                      ) : (
-                        <span
-                          className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-[600] ${getStatusColor(
-                            order.status
-                          )}`}
-                        >
-                          {getStatusIcon(order.status)}
-                          {order.status}
-                        </span>
-                      )}
-                    </div>
-                  </td>
+        <td className="px-6 py-4 text-[14px] text-gray-600">
+          {new Date(order.createdAt).toLocaleString()}
+        </td>
 
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {order.deliveryAgent?.user?.name || order.deliveryAgent?.name || "Unassigned"}
-                  </td>
+        <td className="px-6 py-4">
+          <button
+            onClick={() => setViewingOrder(order)}
+            className="p-2 hover:bg-gray-100 rounded-lg group"
+            title="View Details"
+          >
+            <Eye className="w-5 h-5 text-gray-400 group-hover:text-[#E23744] transition-colors" />
+          </button>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
 
-                  <td className="px-6 py-4 text-[14px] text-gray-600">
-                    {new Date(order.createdAt).toLocaleString()}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => setViewingOrder(order)}
-                      className="p-2 hover:bg-gray-100 rounded-lg group"
-                      title="View Details"
-                    >
-                      <Eye className="w-5 h-5 text-gray-400 group-hover:text-[#E23744] transition-colors" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
           </table>
         </div>
       </div>
